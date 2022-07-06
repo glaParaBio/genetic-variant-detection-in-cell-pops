@@ -1,0 +1,6 @@
+genome	fasta	gff
+PlasmoDB-52_PbergheiANKA	https://plasmodb.org/common/downloads/release-52/PbergheiANKA/fasta/data/PlasmoDB-52_PbergheiANKA_Genome.fasta	https://plasmodb.org/common/downloads/release-52/PbergheiANKA/gff/data/PlasmoDB-52_PbergheiANKA.gff
+		
+PlasmoDB-53_PbergheiANKA	https://plasmodb.org/common/downloads/release-53/PbergheiANKA/fasta/data/PlasmoDB-53_PbergheiANKA_Genome.fasta	NA
+ToxoDB-56_TgondiiGT1	https://toxodb.org/common/downloads/release-56/TgondiiGT1/fasta/data/ToxoDB-56_TgondiiGT1_Genome.fasta	https://toxodb.org/common/downloads/release-56/TgondiiGT1/gff/data/ToxoDB-56_TgondiiGT1.gff
+PbANKA_01_v3	../test/ref/PbANKA_01_v3.fasta.gz	NA

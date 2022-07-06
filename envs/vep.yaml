@@ -1,0 +1,3 @@
+# VEP needs its own version of htslib so we use a dedicated env
+dependencies:
+  - ensembl-vep =105.0

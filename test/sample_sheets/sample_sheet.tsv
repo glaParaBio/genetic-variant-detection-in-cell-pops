@@ -1,0 +1,7 @@
+library_id	genome	cutadapt_adapter	fastq_r1	fastq_r2
+PbANKA_820	PlasmoDB-52_PbergheiANKA	AGATCGGAAGAGC	../test/fastq/PbANKA_820_S1_R1.fastq.gz	../test/fastq/PbANKA_820_S1_R2.fastq.gz
+PbANKA_820	PlasmoDB-52_PbergheiANKA	NA	../test/fastq/PbANKA_820_S2_R1.fq.gz	../test/fastq/PbANKA_820_S2_R2.fq.gz
+PbANKA_820	PlasmoDB-53_PbergheiANKA	AGATCGGAAGAGC	../test/fastq/PbANKA_820_S1_R1.fastq.gz	../test/fastq/PbANKA_820_S1_R2.fastq.gz
+PbANKA_1	PlasmoDB-52_PbergheiANKA	AGATCGGAAGAGC	../test/fastq/PbANKA_R1.fastq.gz	../test/fastq/PbANKA_R2.fastq.gz
+PbANKA_820	PlasmoDB-53_PbergheiANKA	NA	../test/fastq/PbANKA_820_S2_R1.fq.gz	../test/fastq/PbANKA_820_S2_R2.fq.gz
+PbANKA_820	PbANKA_01_v3	NA	../test/fastq/PbANKA_820_S2_R1.fq.gz	../test/fastq/PbANKA_820_S2_R2.fq.gz
