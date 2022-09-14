@@ -58,9 +58,9 @@ mamba install -n genetic-variant-detection-in-cell-pops --yes --file requirement
 Sample sheets
 =============
 
-See the test sample sheets in directory `test/sample_sheets` for examples.
+See the test sample sheets in directory [test/sample_sheets](test/sample_sheets) for examples.
 
-Populate the tab-separated file `sample_sheet.tsv` as appropriate. This tabular
+Populate the tab-separated file [sample_sheet.tsv](test/sample_sheets/sample_sheet.tsv) as appropriate. This tabular
 file links libraries to their raw fastq files and genomes. Columns are:
 
 Column | Description
@@ -74,7 +74,7 @@ fastq_r2 | Full path to fastq read 2
 If you have more than one pair of fastq file per library, add one row per fastq
 pair and use the same library_id for each of them.
 
-Populate the tab-separated file `genomes.tsv`. This file indicates where to
+Populate the tab-separated file [genomes.tsv](test/sample_sheets/genomes.tsv). This file indicates where to
 download the reference data. Columns are:
 
 Column | Description
