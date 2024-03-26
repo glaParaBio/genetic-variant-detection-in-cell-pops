@@ -1,3 +1,4 @@
 # VEP needs its own version of htslib so we use a dedicated env
 dependencies:
+  - perl-compress-raw-zlib =2.202
   - ensembl-vep =105.0

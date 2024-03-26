@@ -34,7 +34,7 @@ rule freebayes_vep:
         '../envs/vep.yaml',
     shell:
         r"""
-        vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip \
+        vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \
             --fasta {input.fasta} --distance 1000 --force_overwrite -o {output.vcf}
         tabix -f {output.vcf}
         """
