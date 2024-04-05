@@ -22,17 +22,17 @@ rule delly_merge:
     shell:
         r"""
         delly merge -o {output.vcf}.merge.bcf {input.bcf}
-        delly call --map-qual 10 --min-clique-size 5 -g {input.fasta} -v {output.vcf}.merge.bcf -o {output.vcf}.gentoype.bcf {input.bam}
+        delly call --map-qual 10 --min-clique-size 5 -g {input.fasta} -v {output.vcf}.merge.bcf -o {output.vcf}.genotype.bcf {input.bam}
 
-        bcftools filter -i '(FMT/DR + FMT/DV + FMT/RR + FMT/RV) > 0' {output.vcf}.gentoype.bcf \
+        bcftools filter -i '(FMT/DR + FMT/DV + FMT/RR + FMT/RV) > 0' {output.vcf}.genotype.bcf \
         | {workflow.basedir}/scripts/add_allele_frequency_vcf.py --format delly \
         | bcftools view -O z > {output.vcf}
         tabix -f {output.vcf}
 
         rm {output.vcf}.merge.bcf
         rm {output.vcf}.merge.bcf.csi
-        rm {output.vcf}.gentoype.bcf
-        rm {output.vcf}.gentoype.bcf.csi
+        rm {output.vcf}.genotype.bcf
+        rm {output.vcf}.genotype.bcf.csi
         """
 
 
