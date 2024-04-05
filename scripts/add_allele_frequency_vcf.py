@@ -36,22 +36,22 @@ def add_tags(variant, sample, source_format):
     else:
         raise Exception('Invalid source format: "%s"' % source_format)
     ad = variant.samples[sample]['AD']
-    dp = sum(ad)
-    if dp == 0:
-        sys.stderr.write('Error: Zero depth found for variant:\n')
-        sys.stderr.write(str(variant) + '\n')
-        sys.exit(1)
-    alt_af = [x/float(dp) for x in ad[1:]]
-    sumalt = sum(ad) - ad[0]
-    variant.samples[sample]['ALT_AF'] = alt_af
-    variant.samples[sample]['SUM_ALT'] = sumalt
-    variant.samples[sample]['SUM_ALT_AF'] = sum(alt_af)
+    if len(ad) == 0 or ad[0] is None:
+        dp = 0
+    else:
+        dp = sum(ad)
+    if dp > 0:
+        alt_af = [x/float(dp) for x in ad[1:]]
+        sumalt = sum(ad) - ad[0]
+        variant.samples[sample]['ALT_AF'] = alt_af
+        variant.samples[sample]['SUM_ALT'] = sumalt
+        variant.samples[sample]['SUM_ALT_AF'] = sum(alt_af)
 
 
 parser = argparse.ArgumentParser(description= 'Add tags to VCF')
 parser.add_argument('invcf', default= '-', nargs= '?', help= 'Input VCF [%(default)s]')
 parser.add_argument('--format', '-f', default= 'freebayes', choices= ['freebayes', 'delly'], help= 'Format (source) of VCF input [%(default)s]')
-parser.add_argument('--version', action='version', version='%(prog)s 0.2.0')
+parser.add_argument('--version', action='version', version='%(prog)s 0.3.0')
 args = parser.parse_args()
 
 
@@ -61,7 +61,11 @@ make_header(invcf)
 outvcf = pysam.VariantFile('-', 'w', header= invcf.header)
 
 for variant in invcf:
-    for sample in variant.samples:
-        add_tags(variant, sample, source_format= args.format)
+    try:
+        for sample in variant.samples:
+            add_tags(variant, sample, source_format= args.format)
+    except:
+        sys.stderr.write('Error in\n' + str(variant) + '\n')
+        raise 
     outvcf.write(variant)
 invcf.close()
