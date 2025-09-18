@@ -52,7 +52,7 @@ you can choose a different name:
 ```
 conda create --yes -n genetic-variant-detection-in-cell-pops
 conda activate genetic-variant-detection-in-cell-pops
-mamba install -n genetic-variant-detection-in-cell-pops --yes --file requirements.txt
+conda install -n genetic-variant-detection-in-cell-pops --yes --file requirements.txt
 ```
 
 Sample sheets
