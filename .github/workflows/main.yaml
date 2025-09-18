@@ -30,7 +30,7 @@ jobs:
         conda activate genetic-variant-detection-in-cell-pops
         conda install -n genetic-variant-detection-in-cell-pops --yes --file requirements.txt
 
-    - name: Run Command in Activated Env
+    - name: Dry Run Pipeline
       shell: bash -l {0}
       run: |
         conda activate genetic-variant-detection-in-cell-pops
