@@ -1,4 +1,4 @@
-#mosdepth/script/plot-dist.py
+# mosdepth/script/plot-dist.py
 
 import sys
 import string
@@ -21,9 +21,12 @@ def main():
         for chrom, data in it.groupby(gen, itemgetter(0)):
             if chrom.startswith("GL"):
                 continue
-            if "Un" in chrom: continue
-            if "random" in chrom or "HLA" in chrom: continue
-            if chrom.endswith("alt"): continue
+            if "Un" in chrom:
+                continue
+            if "random" in chrom or "HLA" in chrom:
+                continue
+            if chrom.endswith("alt"):
+                continue
             chroms[chrom] = True
             xs, ys = [], []
             v50 = 0
@@ -47,12 +50,14 @@ def main():
                     xs = xs[::2]
                     ys = ys[::2]
 
-            traces[chrom].append({
-                'x': [round(x, 3) for x in xs],
-                'y': [round(y, 3) for y in ys],
-                'mode': 'lines',
-                'name': sample + (" (%.1f)" % float(v50))
-            })
+            traces[chrom].append(
+                {
+                    "x": [round(x, 3) for x in xs],
+                    "y": [round(y, 3) for y in ys],
+                    "mode": "lines",
+                    "name": sample + (" (%.1f)" % float(v50)),
+                }
+            )
 
     tmpl = """<html>
     <head>
@@ -90,13 +95,24 @@ def main():
     tmpl = string.Template(tmpl)
     try:
         with open(args.output, "w") as html:
-            divs = "\n".join("<{div}>{chrom}</{div}><div id='plot-div-{chrom}'></div><hr/>".format(
-                chrom=c, div="h2" if c == "total" else "b") for c in chroms)
-            html.write(tmpl.substitute(showlegend="true" if len(
-                sys.argv[1:]) < 20 else "false", plot_divs=divs))
+            divs = "\n".join(
+                "<{div}>{chrom}</{div}><div id='plot-div-{chrom}'></div><hr/>".format(
+                    chrom=c, div="h2" if c == "total" else "b"
+                )
+                for c in chroms
+            )
+            html.write(
+                tmpl.substitute(
+                    showlegend="true" if len(sys.argv[1:]) < 20 else "false",
+                    plot_divs=divs,
+                )
+            )
             for chrom in chroms:
-                html.write(string.Template(chr_tmpl).substitute(
-                    chrom=chrom, data=json.dumps(traces[chrom])))
+                html.write(
+                    string.Template(chr_tmpl).substitute(
+                        chrom=chrom, data=json.dumps(traces[chrom])
+                    )
+                )
             html.write(footer)
     except FileNotFoundError:
         sys.exit("ERROR: failed creating output file, does the path exist?")
@@ -104,14 +120,15 @@ def main():
 
 def get_args():
     parser = ArgumentParser(description="Creates html plots from mosdepth results.")
-    parser.add_argument("-o", "--output",
-                        default="dist.html",
-                        help="path and name of output file. Directories must exist.")
-    parser.add_argument("input",
-                        nargs='+',
-                        help="the dist file(s) to use for plotting")
+    parser.add_argument(
+        "-o",
+        "--output",
+        default="dist.html",
+        help="path and name of output file. Directories must exist.",
+    )
+    parser.add_argument("input", nargs="+", help="the dist file(s) to use for plotting")
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

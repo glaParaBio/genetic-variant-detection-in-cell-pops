@@ -1,10 +1,16 @@
 rule delly_call:
     input:
-        bam= lambda wc: expand('{{genome}}/bwa/{library_id}.bam', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        bai= lambda wc: expand('{{genome}}/bwa/{library_id}.bam.bai', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        fasta= 'ref/{genome}.fasta',
+        bam=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        bai=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam.bai",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        fasta="ref/{genome}.fasta",
     output:
-        bcf= '{genome}/delly/tmp/sv.bcf',
+        bcf="{genome}/delly/tmp/sv.bcf",
     shell:
         r"""
         delly call --map-qual 10 --min-clique-size 5 -g {input.fasta} -o {output.bcf} {input.bam}
@@ -13,12 +19,18 @@ rule delly_call:
 
 rule delly_merge:
     input:
-        bam= lambda wc: expand('{{genome}}/bwa/{library_id}.bam', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        bai= lambda wc: expand('{{genome}}/bwa/{library_id}.bam.bai', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        bcf= '{genome}/delly/tmp/sv.bcf',
-        fasta= 'ref/{genome}.fasta',
+        bam=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        bai=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam.bai",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        bcf="{genome}/delly/tmp/sv.bcf",
+        fasta="ref/{genome}.fasta",
     output:
-        vcf= '{genome}/delly/variants.vcf.gz',
+        vcf="{genome}/delly/variants.vcf.gz",
     shell:
         r"""
         delly merge -o {output.vcf}.merge.bcf {input.bcf}
@@ -38,13 +50,13 @@ rule delly_merge:
 
 rule delly_vep:
     input:
-        vcf= '{genome}/delly/variants.vcf.gz',
-        gff= 'ref/{genome}.gff.gz',
-        fasta= 'ref/{genome}.fasta',
+        vcf="{genome}/delly/variants.vcf.gz",
+        gff="ref/{genome}.gff.gz",
+        fasta="ref/{genome}.fasta",
     output:
-        vcf= '{genome}/delly/vep.vcf.gz',
+        vcf="{genome}/delly/vep.vcf.gz",
     conda:
-        '../envs/vep.yaml',
+        "../envs/vep.yaml"
     shell:
         r"""
         vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \

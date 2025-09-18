@@ -1,13 +1,19 @@
 rule freebayes:
     input:
-        bam= lambda wc: expand('{{genome}}/bwa/{library_id}.bam', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        bai= lambda wc: expand('{{genome}}/bwa/{library_id}.bam.bai', library_id= ss[ss.genome == wc.genome].library_id.unique()),
-        fasta= 'ref/{genome}.fasta',
-        fai= 'ref/{genome}.fasta.fai',
+        bam=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        bai=lambda wc: expand(
+            "{{genome}}/bwa/{library_id}.bam.bai",
+            library_id=ss[ss.genome == wc.genome].library_id.unique(),
+        ),
+        fasta="ref/{genome}.fasta",
+        fai="ref/{genome}.fasta.fai",
     output:
-        vcf= '{genome}/freebayes/variants.vcf.gz',
+        vcf="{genome}/freebayes/variants.vcf.gz",
     conda:
-        '../envs/freebayes.yaml',
+        "../envs/freebayes.yaml"
     shell:
         r"""
         awk '{{print $1":0-"$2}}' {input.fai} \
@@ -25,13 +31,13 @@ rule freebayes:
 
 rule freebayes_vep:
     input:
-        vcf= '{genome}/freebayes/variants.vcf.gz',
-        gff= 'ref/{genome}.gff.gz',
-        fasta= 'ref/{genome}.fasta',
+        vcf="{genome}/freebayes/variants.vcf.gz",
+        gff="ref/{genome}.gff.gz",
+        fasta="ref/{genome}.fasta",
     output:
-        vcf= '{genome}/freebayes/vep.vcf.gz',
+        vcf="{genome}/freebayes/vep.vcf.gz",
     conda:
-        '../envs/vep.yaml',
+        "../envs/vep.yaml"
     shell:
         r"""
         vep -i {input.vcf} --vcf --gff {input.gff} --format vcf --compress_output bgzip --species NA \
