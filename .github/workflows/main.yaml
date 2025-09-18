@@ -19,7 +19,7 @@ jobs:
       with:
         auto-update-conda: true
         miniforge-variant: Miniforge3
-        channels: channels: conda-forge,bioconda,defaults
+        channels: conda-forge,bioconda,defaults
         activate-environment: genetic-variant-detection-in-cell-pops
         use-mamba: false
 
