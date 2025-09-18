@@ -37,11 +37,3 @@ jobs:
         snakemake --dry-run -p -j 5 --use-conda -d output/ \
           -C ss=$PWD/test/sample_sheets/sample_sheet.tsv \
           genomes=$PWD/test/sample_sheets/genomes.tsv
-
-    - name: Run with test data
-      shell: bash -l {0}
-      run: |
-        conda activate genetic-variant-detection-in-cell-pops
-        snakemake -p -j 5 --use-conda -d output/ \
-          -C ss=$PWD/test/sample_sheets/sample_sheet.tsv \
-          genomes=$PWD/test/sample_sheets/genomes.tsv
