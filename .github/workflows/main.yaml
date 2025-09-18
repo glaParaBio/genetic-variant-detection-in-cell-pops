@@ -1,0 +1,39 @@
+name: Test pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        miniforge-variant: Miniforge3
+        channels: channels: conda-forge,bioconda,defaults
+        activate-environment: genetic-variant-detection-in-cell-pops
+        use-mamba: false
+
+    - name: Create and Install Conda Environment
+      shell: bash -l {0}
+      run: |
+        conda create --yes -n genetic-variant-detection-in-cell-pops
+        conda activate genetic-variant-detection-in-cell-pops
+        conda install -n genetic-variant-detection-in-cell-pops --yes --file requirements.txt
+
+    - name: Run Command in Activated Env
+      shell: bash -l {0}
+      run: |
+        conda activate genetic-variant-detection-in-cell-pops
+        snakemake --dry-run -p -j 5 --use-conda -d output/ \
+          -C ss=$PWD/test/sample_sheets/sample_sheet.tsv \
+          genomes=$PWD/test/sample_sheets/genomes.tsv
