@@ -19,9 +19,9 @@ def add_fastq_pair_id(ss):
         ["library_id", "fastq_r1"]
     ].drop_duplicates()
     fq["basename"] = [os.path.basename(x) for x in fq.fastq_r1]
-    fq["basename"] = [re.sub("\.gz$", "", x) for x in fq.basename]
+    fq["basename"] = [re.sub(r"\.gz$", "", x) for x in fq.basename]
     fq["basename"] = [
-        re.sub("\.fastq$|\.fq$|\.bz2$|\.txt$", "", x) for x in fq.basename
+        re.sub(r"\.fastq$|\.fq$|\.bz2$|\.txt$", "", x) for x in fq.basename
     ]
     fq["idx"] = ["%.04d" % (i + 1) for i in range(len(fq))]
     fq["pair_id"] = fq["idx"] + "." + fq["basename"]
@@ -68,14 +68,14 @@ ss = pandas.merge(ss, genomes, on="genome")
 
 fastqc_reports = {}
 for fq in list(set(ss.fastq_r1)) + list(set(ss.fastq_r2)):
-    fq_name = re.sub("\.gz$|\.bz2$", "", os.path.basename(fq))
+    fq_name = re.sub(r"\.gz$|\.bz2$", "", os.path.basename(fq))
     if (
         fq_name.endswith(".fastq")
         or fq_name.endswith(".fq")
         or fq_name.endswith(".txt")
         or fq_name.endswith(".csfastq")
     ):
-        fq_name = re.sub("\.fastq$|\.fq$|\.txt$|\.csfastq$", "", fq_name)
+        fq_name = re.sub(r"\.fastq$|\.fq$|\.txt$|\.csfastq$", "", fq_name)
     else:
         raise Exception(
             'To be fixed: Fastq filenames should have extension "[.fastq|.fq|.txt|.csfastq][.gz|.bz2]".\nGot instead "%s"'
@@ -223,16 +223,16 @@ rule cutadapt:
     run:
         if pandas.isna(params.adapter):
             cmd = r"""
-                    ln -s {input.fastq_r1} {output.fastq_r1}
-                    ln -s {input.fastq_r2} {output.fastq_r2}
-                    touch {output.report}
-                    """
-else:
-    cmd = r"""
-                    cutadapt --minimum-length 10 --cores 8 -a {params.adapter} \
-                        -A {params.adapter} -o {output.fastq_r1} -p {output.fastq_r2} \
-                        {input.fastq_r1} {input.fastq_r2} > {output.report}
-                    """
+            ln -s {input.fastq_r1} {output.fastq_r1}
+            ln -s {input.fastq_r2} {output.fastq_r2}
+            touch {output.report}
+            """
+        else:
+            cmd = r"""
+            cutadapt --minimum-length 10 --cores 8 -a {params.adapter} \
+                -A {params.adapter} -o {output.fastq_r1} -p {output.fastq_r2} \
+                {input.fastq_r1} {input.fastq_r2} > {output.report}
+            """
         shell(cmd)
 
 
